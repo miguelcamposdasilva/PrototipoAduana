@@ -1,0 +1,64 @@
+<!-- pasos.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pasos Fronterizos</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .estado-abierto { color: green; }
+    .estado-cerrado { color: red; }
+    .trafico-alto { color: red; }
+    .trafico-medio { color: orange; }
+    .trafico-bajo { color: green; }
+  </style>
+
+  <script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+      // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+      }
+    }
+  });
+</script>
+</head>
+<body>
+  <h1>Pasos Fronterizos de Chile</h1>
+  <table border="1" cellspacing="0" cellpadding="10" style="margin: auto;">
+    <tr><th>Nombre</th><th>Estado</th><th>Tráfico</th></tr>
+    <tr><td>Los Libertadores</td><td class="estado-abierto">Abierto</td><td class="trafico-alto">Alto</td></tr>
+    <tr><td>Chacalluta</td><td class="estado-abierto">Abierto</td><td class="trafico-medio">Medio</td></tr>
+    <tr><td>Colchane</td><td class="estado-cerrado">Cerrado</td><td class="trafico-bajo">Bajo</td></tr>
+    <tr><td>Sico</td><td class="estado-abierto">Abierto</td><td class="trafico-bajo">Bajo</td></tr>
+    <tr><td>Jama</td><td class="estado-abierto">Abierto</td><td class="trafico-alto">Alto</td></tr>
+    <tr><td>Pehuenche</td><td class="estado-cerrado">Cerrado</td><td class="trafico-medio">Medio</td></tr>
+    <tr><td>Cardenal Samoré</td><td class="estado-abierto">Abierto</td><td class="trafico-medio">Medio</td></tr>
+    <tr><td>Hua Hum</td><td class="estado-abierto">Abierto</td><td class="trafico-bajo">Bajo</td></tr>
+    <tr><td>Pino Hachado</td><td class="estado-cerrado">Cerrado</td><td class="trafico-alto">Alto</td></tr>
+    <tr><td>Mamuil Malal</td><td class="estado-abierto">Abierto</td><td class="trafico-bajo">Bajo</td></tr>
+  </table>
+</body>
+</html>

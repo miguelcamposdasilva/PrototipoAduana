@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Búsqueda - Aduanas</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+<script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+       // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+      }
+    }
+  });
+</script>
+
+</head>
+<body>
+  <!-- Encabezado -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="icono">🛡️</span>
+      <div class="textos">
+        <strong>SERVICIO NACIONAL DE ADUANAS</strong>
+        <small>Búsqueda de Personas/Vehículos</small>
+      </div>
+    </div>
+    <nav>
+      <button class="login-btn" onclick="window.location.href='dashboard-funcionario.html'">← Volver al Dashboard</button>
+    </nav>
+  </header>
+
+  <!-- Bandera -->
+  <div class="bandera">
+    <div class="franja azul"></div>
+    <div class="estrella">⭐</div>
+    <div class="franja roja"></div>
+  </div>
+
+  <!-- Cuerpo -->
+  <main>
+    <h1>Búsqueda de Personas y Vehículos</h1>
+    <p class="subtitulo">Consulta información detallada por patente o RUT</p>
+
+    <!-- Búsqueda -->
+    <div class="busqueda-seccion">
+      <div class="busqueda-container">
+        <div class="busqueda-tabs">
+          <button class="tab-btn active" onclick="abrirTab(event, 'patente-tab')">Por Patente</button>
+          <button class="tab-btn" onclick="abrirTab(event, 'rut-tab')">Por RUT</button>
+        </div>
+        
+        <div id="patente-tab" class="tab-content" style="display: block;">
+          <div class="busqueda-form">
+            <input type="text" id="patente-input" placeholder="Ingrese patente (ej: AB1234)" pattern="[A-Za-z]{2}\d{4}" title="Formato: 2 letras seguidas de 4 números">
+            <button onclick="buscarPorPatente()">Buscar</button>
+          </div>
+        </div>
+        
+        <div id="rut-tab" class="tab-content">
+          <div class="busqueda-form">
+            <input type="text" id="rut-input" placeholder="Ingrese RUT (ej: 12345678-9)" pattern="\d{7,8}-[\dkK]" title="Formato: 12345678-9">
+            <button onclick="buscarPorRut()">Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div id="resultado-busqueda" class="resultado-container" style="display: none;">
+      <div class="resultado-header">
+        <h3>Resultado de Búsqueda</h3>
+        <button onclick="cerrarResultado()">×</button>
+      </div>
+      <div class="resultado-content">
+        <div id="resultado-datos"></div>
+        <div id="resultado-estadia" class="estadia-info"></div>
+      </div>
+    </div>
+
+    <!-- Historial de búsquedas recientes -->
+    <div class="historial-busquedas">
+      <h2 class="seccion-titulo">🕒 Búsquedas Recientes</h2>
+      <div class="historial-grid">
+        <div class="historial-item">
+          <div class="historial-icono">🚗</div>
+          <div class="historial-info">
+            <h3>Patente: AB1234</h3>
+            <p>Toyota Hilux - Juan Pérez</p>
+            <small>Búsqueda: Hoy 09:30</small>
+          </div>
+          <button class="historial-btn">Ver</button>
+        </div>
+        <div class="historial-item">
+          <div class="historial-icono">👤</div>
+          <div class="historial-info">
+            <h3>RUT: 12.345.678-9</h3>
+            <p>María González López</p>
+            <small>Búsqueda: Ayer 16:45</small>
+          </div>
+          <button class="historial-btn">Ver</button>
+        </div>
+        <div class="historial-item">
+          <div class="historial-icono">🚗</div>
+          <div class="historial-info">
+            <h3>Patente: CD5678</h3>
+            <p>Hyundai Tucson - Carlos Soto</p>
+            <small>Búsqueda: Ayer 14:20</small>
+          </div>
+          <button class="historial-btn">Ver</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/script.js"></script>
+  <script>
+    // Funciones de búsqueda (las mismas que en el dashboard)
+    function abrirTab(evt, tabName) {
+      const tabContents = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.display = "none";
+      }
+      
+      const tabButtons = document.getElementsByClassName("tab-btn");
+      for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+      }
+      
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    
+    function buscarPorPatente() {
+      const patente = document.getElementById("patente-input").value.trim().toUpperCase();
+      if (!patente) {
+        alert("Por favor ingrese una patente válida");
+        return;
+      }
+      
+      // Simulación de búsqueda
+      const resultado = {
+        patente: patente,
+        marca: "Toyota",
+        modelo: "Hilux",
+        año: 2022,
+        color: "Blanco",
+        rutDueño: "12.345.678-9",
+        nombreDueño: "Juan Pérez González",
+        fechaIngreso: "10/06/2023 08:45",
+        diasPermitidos: 30,
+        diasTranscurridos: 12,
+        diasRestantes: 18,
+        estado: "Vigente",
+        observaciones: "Sin observaciones"
+      };
+      
+      mostrarResultado(resultado, 'patente');
+    }
+    
+    function buscarPorRut() {
+      const rut = document.getElementById("rut-input").value.trim();
+      if (!rut) {
+        alert("Por favor ingrese un RUT válido");
+        return;
+      }
+      
+      // Simulación de búsqueda
+      const resultado = {
+        rut: rut,
+        nombre: "María González López",
+        nacionalidad: "Chilena",
+        vehiculos: [
+          { patente: "AB1234", marca: "Toyota", modelo: "Hilux", diasRestantes: 18 },
+          { patente: "CD5678", marca: "Hyundai", modelo: "Tucson", diasRestantes: 5 }
+        ],
+        ultimoIngreso: "10/06/2023 08:45",
+        estado: "Habilitado",
+        observaciones: "Sin observaciones"
+      };
+      
+      mostrarResultado(resultado, 'rut');
+    }
+    
+    function mostrarResultado(data, tipo) {
+      const resultadoDiv = document.getElementById("resultado-datos");
+      const estadiaDiv = document.getElementById("resultado-estadia");
+      
+      if (tipo === 'patente') {
+        resultadoDiv.innerHTML = `
+          <div class="resultado-item">
+            <h4>Vehículo</h4>
+            <p><strong>Patente:</strong> ${data.patente}</p>
+            <p><strong>Marca/Modelo:</strong> ${data.marca} ${data.modelo}</p>
+            <p><strong>Año/Color:</strong> ${data.año} - ${data.color}</p>
+          </div>
+          <div class="resultado-item">
+            <h4>Dueño</h4>
+            <p><strong>RUT:</strong> ${data.rutDueño}</p>
+            <p><strong>Nombre:</strong> ${data.nombreDueño}</p>
+          </div>
+          <div class="resultado-item">
+            <h4>Información de Ingreso</h4>
+            <p><strong>Fecha Ingreso:</strong> ${data.fechaIngreso}</p>
+            <p><strong>Estado:</strong> <span class="estado ${data.estado.toLowerCase()}">${data.estado}</span></p>
+          </div>
+        `;
+        
+        estadiaDiv.innerHTML = `
+          <div class="estadia-grafico">
+            <div class="estadia-bar">
+              <div class="estadia-progreso" style="width: ${(data.diasTranscurridos/data.diasPermitidos)*100}%"></div>
+            </div>
+            <div class="estadia-dias">
+              <p><strong>Días transcurridos:</strong> ${data.diasTranscurridos}</p>
+              <p><strong>Días restantes:</strong> ${data.diasRestantes}</p>
+              <p><strong>Total días permitidos:</strong> ${data.diasPermitidos}</p>
+            </div>
+          </div>
+        `;
+      } else { // RUT
+        resultadoDiv.innerHTML = `
+          <div class="resultado-item">
+            <h4>Persona</h4>
+            <p><strong>RUT:</strong> ${data.rut}</p>
+            <p><strong>Nombre:</strong> ${data.nombre}</p>
+            <p><strong>Nacionalidad:</strong> ${data.nacionalidad}</p>
+            <p><strong>Estado:</strong> <span class="estado ${data.estado.toLowerCase()}">${data.estado}</span></p>
+          </div>
+          <div class="resultado-item">
+            <h4>Último Ingreso</h4>
+            <p>${data.ultimoIngreso}</p>
+          </div>
+        `;
+        
+        let vehiculosHTML = '<h4>Vehículos Registrados</h4><div class="vehiculos-lista">';
+        data.vehiculos.forEach(veh => {
+          vehiculosHTML += `
+            <div class="vehiculo-item">
+              <p><strong>${veh.patente}</strong> - ${veh.marca} ${veh.modelo}</p>
+              <p><strong>Días restantes:</strong> ${veh.diasRestantes}</p>
+            </div>
+          `;
+        });
+        vehiculosHTML += '</div>';
+        
+        estadiaDiv.innerHTML = vehiculosHTML;
+      }
+      
+      document.getElementById("resultado-busqueda").style.display = "block";
+    }
+    
+    function cerrarResultado() {
+      document.getElementById("resultado-busqueda").style.display = "none";
+      document.getElementById("patente-input").value = "";
+      document.getElementById("rut-input").value = "";
+    }
+  </script>
+</body>
+</html>

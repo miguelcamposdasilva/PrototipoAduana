@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revisión de Declaraciones - Aduanas</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+<script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+       // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+      }
+    }
+  });
+</script>
+
+</head>
+<body>
+  <!-- Encabezado -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="icono">🛡️</span>
+      <div class="textos">
+        <strong>SERVICIO NACIONAL DE ADUANAS</strong>
+        <small>Revisión de Declaraciones</small>
+      </div>
+    </div>
+    <nav>
+      <button class="login-btn" onclick="window.location.href='dashboard-funcionario.html'">← Volver al Dashboard</button>
+    </nav>
+  </header>
+
+  <!-- Bandera -->
+  <div class="bandera">
+    <div class="franja azul"></div>
+    <div class="estrella">⭐</div>
+    <div class="franja roja"></div>
+  </div>
+
+  <!-- Cuerpo -->
+  <main>
+    <h1>Revisión de Declaraciones</h1>
+    <p class="subtitulo">Gestión y validación de declaraciones de importación pendientes</p>
+
+    <!-- Filtros de búsqueda -->
+    <div class="filtros-container">
+      <div class="filtros-grid">
+        <div class="filtro-item">
+          <label for="fecha">Fecha:</label>
+          <input type="date" id="fecha">
+        </div>
+        <div class="filtro-item">
+          <label for="estado">Estado:</label>
+          <select id="estado">
+            <option value="todos">Todos</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="revisado">Revisados</option>
+            <option value="aprobado">Aprobados</option>
+            <option value="rechazado">Rechazados</option>
+          </select>
+        </div>
+        <div class="filtro-item">
+          <label for="busqueda">Búsqueda:</label>
+          <input type="text" id="busqueda" placeholder="N° Declaración o RUT">
+        </div>
+        <button class="filtro-btn">🔍 Buscar</button>
+      </div>
+    </div>
+
+    <!-- Listado de declaraciones -->
+    <div class="declaraciones-tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>N° Declaración</th>
+            <th>Fecha</th>
+            <th>Importador</th>
+            <th>RUT</th>
+            <th>Mercancía</th>
+            <th>Valor (USD)</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#AD-2023-0456</td>
+            <td>10/06/2023</td>
+            <td>Importadora Chile S.A.</td>
+            <td>76.543.210-9</td>
+            <td>Maquinaria industrial</td>
+            <td>125,450</td>
+            <td><span class="estado pendiente">Pendiente</span></td>
+            <td><button class="tabla-btn">Revisar</button></td>
+          </tr>
+          <tr>
+            <td>#AD-2023-0455</td>
+            <td>09/06/2023</td>
+            <td>Electrodomésticos Ltda.</td>
+            <td>65.432.109-8</td>
+            <td>Refrigeradores</td>
+            <td>89,200</td>
+            <td><span class="estado aprobado">Aprobado</span></td>
+            <td><button class="tabla-btn">Ver</button></td>
+          </tr>
+          <tr>
+            <td>#AD-2023-0454</td>
+            <td>09/06/2023</td>
+            <td>Tecnología Global SpA</td>
+            <td>98.765.432-1</td>
+            <td>Componentes electrónicos</td>
+            <td>45,780</td>
+            <td><span class="estado rechazado">Rechazado</span></td>
+            <td><button class="tabla-btn">Ver</button></td>
+          </tr>
+          <tr>
+            <td>#AD-2023-0453</td>
+            <td>08/06/2023</td>
+            <td>Farmacéutica Andina</td>
+            <td>12.345.678-9</td>
+            <td>Medicamentos</td>
+            <td>32,150</td>
+            <td><span class="estado revisado">Revisado</span></td>
+            <td><button class="tabla-btn">Revisar</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="paginacion">
+      <button class="pagina-btn">❮ Anterior</button>
+      <span class="pagina-actual">1</span>
+      <button class="pagina-btn">Siguiente ❯</button>
+    </div>
+  </main>
+
+  <script src="/assets/js/script.js"></script>
+</body>
+</html>

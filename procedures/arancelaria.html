@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta Arancelaria</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+<script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+    // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+      }
+    }
+  });
+</script>
+
+</head>
+<body>
+  <h1>⚖️ Clasificación Arancelaria</h1>
+  <table border="1">
+    <tr><th>Producto</th><th>Código</th><th>Arancel (%)</th></tr>
+    <tr><td>Celulares</td><td>8517</td><td>10%</td></tr>
+    <tr><td>Ropa</td><td>6203</td><td>8%</td></tr>
+    <tr><td>Alimentos</td><td>1602</td><td>6%</td></tr>
+  </table>
+</body>
+</html>

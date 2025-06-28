@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Funcionario - Aduanas</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+<script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+    // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+      }
+    }
+  });
+</script>
+
+</head>
+<body>
+  <!-- Encabezado -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="icono">🛡️</span>
+      <div class="textos">
+        <strong>SERVICIO NACIONAL DE ADUANAS</strong>
+        <small>Panel de Funcionario</small>
+      </div>
+    </div>
+    <nav>
+      <button class="login-btn" onclick="window.location.href='/users/login.html'">🔐 Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <!-- Bandera -->
+  <div class="bandera">
+    <div class="franja azul"></div>
+    <div class="estrella">⭐</div>
+    <div class="franja roja"></div>
+  </div>
+
+  <!-- Cuerpo -->
+  <main>
+    <h1>Panel de Funcionario Aduanero</h1>
+    <p class="subtitulo">Herramientas administrativas para la gestión aduanera</p>
+
+       <!-- Sección de Estadísticas -->
+    <div class="estadisticas-seccion">
+      <h2 class="seccion-titulo">📊 Estadísticas de Movimiento</h2>
+      <div class="estadisticas-grid">
+        <div class="estadistica-card estadistica-azul">
+          <div class="estadistica-icono">👥</div>
+          <div class="estadistica-contenido">
+            <h3>Ingresos de Personas (Hoy)</h3>
+            <div class="estadistica-valor">2,847 <span class="estadistica-tendencia positiva">+8%</span></div>
+          </div>
+        </div>
+        
+        <div class="estadistica-card estadistica-verde">
+          <div class="estadistica-icono">👥</div>
+          <div class="estadistica-contenido">
+            <h3>Egresos de Personas (Hoy)</h3>
+            <div class="estadistica-valor">2,756 <span class="estadistica-tendencia positiva">+3%</span></div>
+          </div>
+        </div>
+        
+        <div class="estadistica-card estadistica-rojo">
+          <div class="estadistica-icono">🚗</div>
+          <div class="estadistica-contenido">
+            <h3>Vehículos Ingresados</h3>
+            <div class="estadistica-valor">892 <span class="estadistica-tendencia positiva">+15%</span></div>
+          </div>
+        </div>
+        
+        <div class="estadistica-card estadistica-morado">
+          <div class="estadistica-icono">🚗</div>
+          <div class="estadistica-contenido">
+            <h3>Vehículos Egresados</h3>
+            <div class="estadistica-valor">834 <span class="estadistica-tendencia positiva">+12%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Alertas del Sistema -->
+    <div class="alertas-sistema">
+      <h2 class="seccion-titulo">🛎️ Alertas del Sistema</h2>
+      <div class="alertas-grid">
+        <div class="alerta-item alerta-azul">
+          <span class="alerta-icono">📝</span>
+          <div class="alerta-contenido">
+            <h3>3 declaraciones pendientes de revisión</h3>
+            <p>Urgencia: Media - Sector: Importaciones</p>
+          </div>
+        </div>
+        <div class="alerta-item alerta-amarillo">
+          <span class="alerta-icono">🔄</span>
+          <div class="alerta-contenido">
+            <h3>Actualización del sistema programada</h3>
+            <p>Viernes 15/06 - 22:00 a 23:00 hrs</p>
+          </div>
+        </div>
+        <div class="alerta-item alerta-verde">
+          <span class="alerta-icono">✅</span>
+          <div class="alerta-contenido">
+            <h3>Backup completado exitosamente</h3>
+            <p>Hoy 10/06 - 03:00 hrs</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Acciones Rápidas -->
+    <div class="acciones-rapidas">
+      <h2 class="seccion-titulo">⚡ Acciones Rápidas</h2>
+      <div class="acciones-grid">
+        <button class="accion-btn accion-azul" onclick="verificarSesionYRedirigir('nueva-declaracion.html')">
+          <span class="accion-icono">➕</span>
+          Nueva Declaración
+        </button>
+        <button class="accion-btn accion-verde" onclick="verificarSesionYRedirigir('gestion-usuarios.html')">
+          <span class="accion-icono">👥</span>
+          Gestionar Usuarios
+        </button>
+        <button class="accion-btn accion-rojo" onclick="verificarSesionYRedirigir('generar-reportes.html')">
+          <span class="accion-icono">📊</span>
+          Generar Reportes
+        </button>
+        <button class="accion-btn accion-morado" onclick="verificarSesionYRedirigir('configuracion-sistema.html')">
+          <span class="accion-icono">⚙️</span>
+          Configuración Sistema
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección de Operaciones Recientes -->
+    <div class="operaciones-recientes">
+      <h2 class="seccion-titulo">📋 Operaciones Recientes</h2>
+      <div class="operaciones-tabla">
+        <table>
+          <thead>
+            <tr>
+              <th>ID Operación</th>
+              <th>Tipo</th>
+              <th>Usuario</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#AD-2023-0456</td>
+              <td>Declaración Importación</td>
+              <td>importador@empresa.cl</td>
+              <td>10/06/2023 09:15</td>
+              <td><span class="estado aprobado">Aprobado</span></td>
+              <td><button class="tabla-btn">Ver Detalle</button></td>
+            </tr>
+            <tr>
+              <td>#AD-2023-0455</td>
+              <td>Autorización Menor</td>
+              <td>padre@familia.cl</td>
+              <td>09/06/2023 16:30</td>
+              <td><span class="estado rechazado">Rechazado</span></td>
+              <td><button class="tabla-btn">Ver Detalle</button></td>
+            </tr>
+            <tr>
+              <td>#AD-2023-0454</td>
+              <td>Certificado Origen</td>
+              <td>exportador@productos.cl</td>
+              <td>09/06/2023 11:45</td>
+              <td><span class="estado aprobado">Aprobado</span></td>
+              <td><button class="tabla-btn">Ver Detalle</button></td>
+            </tr>
+            <tr>
+              <td>#AD-2023-0453</td>
+              <td>Inspección Física</td>
+              <td>almacen@puerto.cl</td>
+              <td>08/06/2023 14:20</td>
+              <td><span class="estado pendiente">Pendiente</span></td>
+              <td><button class="tabla-btn">Ver Detalle</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Sección de Tarjetas Principales -->
+    <div class="grid">
+      <div class="card">
+        <div class="icon azul">📊</div>
+        <h2>Revisión de Declaraciones</h2>
+        <p>Revise y valide declaraciones de importación pendientes</p>
+        <button onclick="verificarSesionYRedirigir('revision-declaraciones.html')">Acceder</button>
+      </div>
+
+      <div class="card">
+        <div class="icon verde">🔍</div>
+        <h2>Buscar Persona/Vehiculo</h2>
+        <p>Busqueda Patente/Rut</p>
+        <button onclick="verificarSesionYRedirigir('inspecciones.html')">Acceder</button>
+      </div>
+
+      <div class="card">
+        <div class="icon verde">👥</div>
+        <h2>Autorizar Salida de Menores</h2>
+        <p>Formulario de Autorizacion</p>
+        <button onclick="verificarSesionYRedirigir('autoriza-menor.html')">Acceder</button>
+      </div>
+
+      <div class="card">
+        <div class="icon morado">📱</div>
+        <h2>Soporte Técnico</h2>
+        <p>Reporte problemas técnicos del sistema</p>
+        <button onclick="verificarSesionYRedirigir('soporte.html')">Acceder</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Usuario - Aduanas Chile</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <!-- Encabezado -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="icono">🛡️</span>
+      <div class="textos">
+        <strong>SERVICIO NACIONAL DE ADUANAS</strong>
+        <small>Registro de Usuario</small>
+      </div>
+    </div>
+    <nav>
+      <button class="login-btn" onclick="window.location.href='../users/login.html'">Iniciar Sesión</button>
+    </nav>
+  </header>
+
+  <!-- Bandera -->
+  <div class="bandera">
+    <div class="franja azul"></div>
+    <div class="estrella">⭐</div>
+    <div class="franja roja"></div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <main class="auth-container">
+    <h1>📝 Registro de Usuario</h1>
+    <p class="subtitulo">Complete el formulario para crear una nueva cuenta</p>
+
+    <form id="formRegistro" class="auth-form">
+      <div class="form-group">
+        <label for="tipoUsuario">Tipo de Usuario:</label>
+        <select id="tipoUsuario" class="form-input">
+          <option value="persona">Persona Natural</option>
+          <option value="funcionario">Funcionario Aduanero</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" class="form-input" required placeholder="ejemplo@correo.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" class="form-input" required placeholder="Mínimo 8 caracteres" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Registrarse</button>
+        <p class="auth-link">¿Ya tienes cuenta? <a href="../users/login.html">Inicia sesión aquí</a></p>
+      </div>
+    </form>
+
+    <p id="mensajeRegistro" class="mensaje"></p>
+  </main>
+
+  <script>
+    // Verificar sesión al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+      if (usuarioLogeado) {
+        window.location.href = usuarioLogeado === "funcionario" 
+          ? "../official/dashboard-funcionario.html" 
+          : "../users/index.html";
+      }
+    });
+
+    // Manejo del formulario
+    document.getElementById("formRegistro").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const tipo = document.getElementById("tipoUsuario").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const mensaje = document.getElementById("mensajeRegistro");
+
+      if (!email || !password) {
+        mostrarMensaje(mensaje, "Debe completar todos los campos", "error");
+        return;
+      }
+
+      if (password.length < 8) {
+        mostrarMensaje(mensaje, "La contraseña debe tener al menos 8 caracteres", "error");
+        return;
+      }
+
+      if (localStorage.getItem(email)) {
+        mostrarMensaje(mensaje, "Este correo ya está registrado", "error");
+      } else {
+        localStorage.setItem(email, JSON.stringify({ tipo, email, password }));
+        mostrarMensaje(mensaje, "¡Registro exitoso! Redirigiendo...", "success");
+        
+        setTimeout(() => {
+          window.location.href = "../users/login.html";
+        }, 1500);
+      }
+    });
+
+    function mostrarMensaje(elemento, texto, tipo) {
+      elemento.textContent = texto;
+      elemento.className = "mensaje " + tipo;
+    }
+  </script>
+</body>
+</html>

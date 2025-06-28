@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal de Servicios Aduaneros</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+<script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+      // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "/users/index.html" : "/users/login.html";
+      }
+    }
+  });
+</script>
+
+</head>
+<body>
+  <!-- Encabezado -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="icono">🛡️</span>
+      <div class="textos">
+        <strong>SERVICIO NACIONAL DE ADUANAS</strong>
+        <small>República de Chile</small>
+      </div>
+    </div>
+    <nav>
+      <button class="login-btn" onclick="window.location.href='/users/login.html'">🔐 Iniciar Sesión</button>
+      <button class="login-btn" onclick="window.location.href='/auth/registro.html'"> Registrarse </button>
+    </nav>
+  </header>
+
+  <!-- Bandera -->
+  <div class="bandera">
+    <div class="franja azul"></div>
+    <div class="estrella">⭐</div>
+    <div class="franja roja"></div>
+  </div>
+
+  <!-- Cuerpo -->
+  <main>
+    <h1>Portal de Servicios Aduaneros</h1>
+    <p class="subtitulo">Facilitamos el comercio exterior de Chile con servicios digitales seguros y eficientes</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="icon azul">📦</div>
+        <h2>Declaración de Importación</h2>
+        <p>Registre sus importaciones y calcule aranceles automáticamente</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/importacion.html')">Iniciar Trámite</button>
+      </div>
+
+      <div class="card">
+        <div class="icon verde">📄</div>
+        <h2>Certificado de Origen</h2>
+        <p>Solicite certificados para productos de exportación</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/certificado.html')">Iniciar Trámite</button>
+      </div>
+
+      <div class="card">
+        <div class="icon rojo">⏱️</div>
+        <h2>Despacho Urgente</h2>
+        <p>Tramite despachos prioritarios para mercancía sensible</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/despacho.html')">Iniciar Trámite</button>
+      </div>
+
+      <div class="card">
+        <div class="icon morado">🧾</div>
+        <h2>Registro de Exportador</h2>
+        <p>Obtenga su registro oficial para exportar productos</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/exportador.html')">Iniciar Trámite</button>
+      </div>
+
+      <div class="card">
+        <div class="icon amarillo">💲</div>
+        <h2>Valoración Aduanera</h2>
+        <p>Determine el valor correcto de sus mercancías</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/valoracion.html')">Iniciar Trámite</button>
+      </div>
+
+      <div class="card">
+        <div class="icon azul">⚖️</div>
+        <h2>Consulta Arancelaria</h2>
+        <p>Verifique la clasificación y aranceles aplicables</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/arancelaria.html')">Iniciar Trámite</button>
+      </div>
+
+      <div class ="card">
+        <div class="icon verde">🐾</div>
+        <h2>Declaración de Mascota</h2>
+        <p>Registre la entrada de mascotas al país</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/mascota.html')">Iniciar Trámite</button>
+      </div> 
+      
+      <div class="card">
+        <div class="icon rojo">🚧</div>
+        <h2>Pasos Fronterizos</h2>
+        <p>Información sobre pasos fronterizos y requisitos</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/pasos.html')">Iniciar Trámite</button>
+        </div>
+      
+      <div class="card">
+        <div class="icon morado">🚗</div>
+        <h2>Registrar Vehículo</h2>
+        <p>Registre su vehículo para trámites aduaneros</p>
+        <button onclick="verificarSesionYRedirigir('/procedures/vehiculo.html')">Iniciar Trámite</button>
+        </div>
+      </div>
+
+
+  </main>
+
+  <script src="/assets/js/script.js"></script>
+</body>
+</html>

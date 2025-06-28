@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Valoración Aduanera</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+  <script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+     // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+      }
+    }
+  });
+</script>
+
+</head>
+<body>
+  <h1>💲 Calculadora de Valoración Aduanera</h1>
+
+  <form onsubmit="calcular(); return false;">
+    <label for="valor">Valor de la Mercancía (FOB en USD):</label>
+    <input type="number" id="valor" step="0.01" required />
+
+    <label for="porcentaje">Porcentaje de Arancel (%):</label>
+    <input type="number" id="porcentaje" value="6" step="0.01" required />
+
+    <button type="submit">Calcular Impuesto</button>
+
+    <p id="resultado" style="margin-top: 1rem; font-weight: bold;"></p>
+  </form>
+
+  <script>
+    function calcular() {
+      const valor = parseFloat(document.getElementById("valor").value);
+      const porcentaje = parseFloat(document.getElementById("porcentaje").value);
+      const impuesto = valor * (porcentaje / 100);
+      const total = valor + impuesto;
+
+      document.getElementById("resultado").innerHTML = `
+        Impuesto a pagar: <span style="color: green">$${impuesto.toFixed(2)} USD</span><br>
+        Valor Total con Arancel: <span style="color: blue">$${total.toFixed(2)} USD</span>
+      `;
+    }
+  </script>
+</body>
+</html>

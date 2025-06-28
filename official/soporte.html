@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soporte Técnico - Aduanas</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+<script>
+  // Verificar sesión al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+    const paginaActual = window.location.pathname.split('/').pop();
+    
+    // Páginas que requieren autenticación
+    const paginasProtegidas = [
+      '/users/index.html', 
+      '/official/dashboard-funcionario.html',
+      '/official/revision-declaraciones.html',
+      '/official/inspecciones.html',
+      '/official/soporte.html'
+      // Agrega aquí otras páginas protegidas
+    ];
+    
+    
+    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+      localStorage.setItem("paginaDestino", paginaActual);
+      window.location.href = "login.html";
+    }
+    
+    // Verificar si es funcionario para páginas de funcionario
+    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+      if (usuarioLogeado !== "funcionario") {
+        alert("Acceso denegado: Se requieren privilegios de funcionario");
+        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+      }
+    }
+  });
+</script>
+
+</head>
+<body>
+  <!-- Encabezado -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="icono">🛡️</span>
+      <div class="textos">
+        <strong>SERVICIO NACIONAL DE ADUANAS</strong>
+        <small>Soporte Técnico</small>
+      </div>
+    </div>
+    <nav>
+      <button class="login-btn" onclick="window.location.href='dashboard-funcionario.html'">← Volver al Dashboard</button>
+    </nav>
+  </header>
+
+  <!-- Bandera -->
+  <div class="bandera">
+    <div class="franja azul"></div>
+    <div class="estrella">⭐</div>
+    <div class="franja roja"></div>
+  </div>
+
+  <!-- Cuerpo -->
+  <main>
+    <h1>Soporte Técnico</h1>
+    <p class="subtitulo">Reporte problemas técnicos o solicite asistencia</p>
+
+    <!-- Formulario de soporte -->
+    <div class="soporte-formulario">
+      <form id="formSoporte">
+        <div class="form-group">
+          <label for="tipo-problema">Tipo de problema:</label>
+          <select id="tipo-problema" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="sistema">Error en sistema</option>
+            <option value="login">Problemas de acceso</option>
+            <option value="rendimiento">Rendimiento lento</option>
+            <option value="funcionalidad">Funcionalidad incorrecta</option>
+            <option value="otros">Otros</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="urgencia">Nivel de urgencia:</label>
+          <div class="urgencia-opciones">
+            <label>
+              <input type="radio" name="urgencia" value="baja" checked> 
+              <span class="urgencia-baja">Baja</span>
+            </label>
+            <label>
+              <input type="radio" name="urgencia" value="media"> 
+              <span class="urgencia-media">Media</span>
+            </label>
+            <label>
+              <input type="radio" name="urgencia" value="alta"> 
+              <span class="urgencia-alta">Alta</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="descripcion">Descripción detallada:</label>
+          <textarea id="descripcion" rows="5" required placeholder="Describa el problema con el mayor detalle posible..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="adjuntos">Adjuntar archivos (opcional):</label>
+          <input type="file" id="adjuntos" multiple>
+          <small>Capturas de pantalla, documentos, etc. (Máx. 5MB)</small>
+        </div>
+        
+        <div class="form-botones">
+          <button type="submit" class="btn-enviar">📨 Enviar Reporte</button>
+          <button type="button" class="btn-cancelar" onclick="window.location.href='dashboard-funcionario.html'">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tickets recientes -->
+    <div class="tickets-recientes">
+      <h2 class="seccion-titulo">📝 Mis Tickets Recientes</h2>
+      <div class="tickets-grid">
+        <div class="ticket-item">
+          <div class="ticket-header">
+            <h3>#ST-2023-0042</h3>
+            <span class="estado pendiente">Pendiente</span>
+          </div>
+          <p><strong>Problema:</strong> Error al generar reporte estadístico</p>
+          <p><strong>Fecha:</strong> 09/06/2023 11:30</p>
+          <button class="ticket-btn">Ver Detalles</button>
+        </div>
+        
+        <div class="ticket-item">
+          <div class="ticket-header">
+            <h3>#ST-2023-0038</h3>
+            <span class="estado resuelto">Resuelto</span>
+          </div>
+          <p><strong>Problema:</strong> Acceso denegado módulo declaraciones</p>
+          <p><strong>Fecha:</strong> 05/06/2023 09:15</p>
+          <button class="ticket-btn">Ver Detalles</button>
+        </div>
+        
+        <div class="ticket-item">
+          <div class="ticket-header">
+            <h3>#ST-2023-0035</h3>
+            <span class="estado en-proceso">En proceso</span>
+          </div>
+          <p><strong>Problema:</strong> Datos no actualizados en tiempo real</p>
+          <p><strong>Fecha:</strong> 02/06/2023 14:45</p>
+          <button class="ticket-btn">Ver Detalles</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById("formSoporte").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Reporte enviado correctamente. N° de ticket: #ST-2023-0043");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
