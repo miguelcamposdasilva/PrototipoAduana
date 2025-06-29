@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro de Usuario - Aduanas Chile</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
   <!-- Encabezado -->
@@ -17,7 +17,7 @@
       </div>
     </div>
     <nav>
-      <button class="login-btn" onclick="window.location.href='users/login.html'">Iniciar Sesión</button>
+      <button class="login-btn" onclick="window.location.href='../users/login.html'">Iniciar Sesión</button>
     </nav>
   </header>
 
@@ -54,7 +54,7 @@
 
       <div class="form-actions">
         <button type="submit" class="btn-primary">Registrarse</button>
-        <p class="auth-link">¿Ya tienes cuenta? <a href="users/login.html">Inicia sesión aquí</a></p>
+        <p class="auth-link">¿Ya tienes cuenta? <a href="../users/login.html">Inicia sesión aquí</a></p>
       </div>
     </form>
 
@@ -67,8 +67,8 @@
       const usuarioLogeado = localStorage.getItem("usuarioLogeado");
       if (usuarioLogeado) {
         window.location.href = usuarioLogeado === "funcionario" 
-          ? "official/dashboard-funcionario.html" 
-          : "users/index.html";
+          ? "../official/dashboard-funcionario.html" 
+          : "../users/index.html";
       }
     });
 
@@ -97,7 +97,7 @@
         mostrarMensaje(mensaje, "¡Registro exitoso! Redirigiendo...", "success");
         
         setTimeout(() => {
-          window.location.href = "users/login.html";
+          window.location.href = "../users/login.html";
         }, 1500);
       }
     });
