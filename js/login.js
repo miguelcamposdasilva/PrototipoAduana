@@ -11,7 +11,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     mensaje.style.color = "green";
     
     // Redirigir a la página destino o al index por defecto
-    const paginaDestino = localStorage.getItem("paginaDestino") || "index.html";
+    const paginaDestino = localStorage.getItem("paginaDestino") || "../index.html";
     setTimeout(() => {
       window.location.href = paginaDestino;
     }, 1000);
