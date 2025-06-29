@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Funcionario - Aduanas</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 
 <script>
   // Verificar sesión al cargar la página
@@ -25,14 +25,14 @@
     
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "users/login.html";
+      window.location.href = "../users/login.html";
     }
     
     // Verificar si es funcionario para páginas de funcionario
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "index.html" : "users/login.html";
+        window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
       }
     }
   });
@@ -50,7 +50,7 @@
       </div>
     </div>
     <nav>
-      <button class="login-btn" onclick="window.location.href='users/login.html'">🔐 Cerrar Sesión</button>
+      <button class="login-btn" onclick="window.location.href='../users/login.html'">🔐 Cerrar Sesión</button>
     </nav>
   </header>
 
@@ -240,6 +240,6 @@
     </div>
   </main>
 
-  <script src="assets/js/script.js"></script>
+  <script src="../js/script.js"></script>
 </body>
 </html>

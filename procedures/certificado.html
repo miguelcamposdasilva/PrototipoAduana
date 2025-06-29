@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Certificado de Origen</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 
   <script>
   // Verificar sesión al cargar la página
@@ -23,14 +23,14 @@
     
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "users/login.html";
+      window.location.href = "../users/login.html";
     }
     
     // Verificar si es funcionario para páginas de funcionario
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "index.html" : "users/login.html";
+        window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
       }
     }
   });

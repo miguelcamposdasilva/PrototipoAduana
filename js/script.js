@@ -6,7 +6,7 @@ function verificarSesionYRedirigir(pagina) {
   if (!usuarioLogeado) {
     // Si no hay sesión, redirigir al login con la página de destino como parámetro
     localStorage.setItem("paginaDestino", pagina);
-    window.location.href = "/users/login.html";
+    window.location.href = "../users/login.html";
     return;
   }
   

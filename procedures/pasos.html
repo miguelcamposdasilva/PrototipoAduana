@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Pasos Fronterizos</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <style>
     .estado-abierto { color: green; }
     .estado-cerrado { color: red; }
@@ -33,14 +33,14 @@
     
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "users/login.html";
+      window.location.href = "../users/login.html";
     }
     
     // Verificar si es funcionario para páginas de funcionario
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "index.html" : "users/login.html";
+        window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
       }
     }
   });

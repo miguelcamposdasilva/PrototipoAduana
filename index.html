@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal de Servicios Aduaneros</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 
 <script>
   // Verificar sesión al cargar la página
@@ -31,7 +31,7 @@
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "index.html" : "users/login.html";
+        window.location.href = usuarioLogeado ? "index.html" : "../users/login.html";
       }
     }
   });
@@ -134,6 +134,6 @@
 
   </main>
 
-  <script src="assets/js/script.js"></script>
+  <script src="../js/script.js"></script>
 </body>
 </html>
