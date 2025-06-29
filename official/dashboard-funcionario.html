@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Funcionario - Aduanas</title>
-  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 
 <script>
   // Verificar sesión al cargar la página
@@ -12,27 +12,27 @@
     const usuarioLogeado = localStorage.getItem("usuarioLogeado");
     const paginaActual = window.location.pathname.split('/').pop();
     
-    // Páginas que requieren autenticación
+ // Páginas que requieren autenticación
     const paginasProtegidas = [
-      '/users/index.html', 
-      '/official/dashboard-funcionario.html',
-      '/official/revision-declaraciones.html',
-      '/official/inspecciones.html',
-      '/official/soporte.html'
+      'index.html', 
+      'official/dashboard-funcionario.html',
+      'official/revision-declaraciones.html',
+      'official/inspecciones.html',
+      'official/soporte.html'
       // Agrega aquí otras páginas protegidas
     ];
     
     
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "login.html";
+      window.location.href = "users/login.html";
     }
     
     // Verificar si es funcionario para páginas de funcionario
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+        window.location.href = usuarioLogeado ? "index.html" : "users/login.html";
       }
     }
   });
@@ -50,7 +50,7 @@
       </div>
     </div>
     <nav>
-      <button class="login-btn" onclick="window.location.href='/users/login.html'">🔐 Cerrar Sesión</button>
+      <button class="login-btn" onclick="window.location.href='users/login.html'">🔐 Cerrar Sesión</button>
     </nav>
   </header>
 
@@ -214,32 +214,32 @@
         <div class="icon azul">📊</div>
         <h2>Revisión de Declaraciones</h2>
         <p>Revise y valide declaraciones de importación pendientes</p>
-        <button onclick="verificarSesionYRedirigir('revision-declaraciones.html')">Acceder</button>
+        <button onclick="verificarSesionYRedirigir('official/revision-declaraciones.html')">Acceder</button>
       </div>
 
       <div class="card">
         <div class="icon verde">🔍</div>
         <h2>Buscar Persona/Vehiculo</h2>
         <p>Busqueda Patente/Rut</p>
-        <button onclick="verificarSesionYRedirigir('inspecciones.html')">Acceder</button>
+        <button onclick="verificarSesionYRedirigir('official/inspecciones.html')">Acceder</button>
       </div>
 
       <div class="card">
         <div class="icon verde">👥</div>
         <h2>Autorizar Salida de Menores</h2>
         <p>Formulario de Autorizacion</p>
-        <button onclick="verificarSesionYRedirigir('autoriza-menor.html')">Acceder</button>
+        <button onclick="verificarSesionYRedirigir('official/autoriza-menor.html')">Acceder</button>
       </div>
 
       <div class="card">
         <div class="icon morado">📱</div>
         <h2>Soporte Técnico</h2>
         <p>Reporte problemas técnicos del sistema</p>
-        <button onclick="verificarSesionYRedirigir('soporte.html')">Acceder</button>
+        <button onclick="verificarSesionYRedirigir('official/soporte.html')">Acceder</button>
       </div>
     </div>
   </main>
 
-  <script src="/assets/js/script.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 </html>

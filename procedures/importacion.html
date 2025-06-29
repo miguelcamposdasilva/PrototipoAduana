@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Declaración de Importación</title>
-  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 
   <script>
   // Verificar sesión al cargar la página
@@ -11,26 +11,26 @@
     const usuarioLogeado = localStorage.getItem("usuarioLogeado");
     const paginaActual = window.location.pathname.split('/').pop();
     
-    // Páginas que requieren autenticación
+     // Páginas que requieren autenticación
     const paginasProtegidas = [
-      '/users/index.html', 
-      '/official/dashboard-funcionario.html',
-      '/official/revision-declaraciones.html',
-      '/official/inspecciones.html',
-      '/official/soporte.html'
+      'index.html', 
+      'official/dashboard-funcionario.html',
+      'official/revision-declaraciones.html',
+      'official/inspecciones.html',
+      'official/soporte.html'
       // Agrega aquí otras páginas protegidas
     ];
     
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "login.html";
+      window.location.href = "users/login.html";
     }
     
     // Verificar si es funcionario para páginas de funcionario
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "index.html" : "login.html";
+        window.location.href = usuarioLogeado ? "index.html" : "users/login.html";
       }
     }
   });
