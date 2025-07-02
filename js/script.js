@@ -1,23 +1,22 @@
 function verificarSesionYRedirigir(pagina) {
-  // Verificar si el usuario está logeado y es funcionario
   const usuarioLogeado = localStorage.getItem("usuarioLogeado");
   const esFuncionario = usuarioLogeado === "funcionario";
   
   if (!usuarioLogeado) {
-    // Si no hay sesión, redirigir al login con la página de destino como parámetro
+    // Guardar destino y redirigir al login (ruta absoluta desde raíz)
     localStorage.setItem("paginaDestino", pagina);
-    window.location.href = "../users/login.html";
+    window.location.href = "/users/login.html";
     return;
   }
   
-  // Verificar permisos para páginas de funcionario
+  // Si requiere privilegios de funcionario
   if (pagina.includes("dashboard") || pagina.includes("funcionario")) {
     if (!esFuncionario) {
       alert("Acceso denegado: Se requieren privilegios de funcionario");
       return;
     }
   }
-  
-  // Redirigir a la página solicitada
+
+  // Redirigir a la página deseada
   window.location.href = pagina;
 }
