@@ -4,40 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal de Servicios Aduaneros</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="css/style.css" />
 
-<script>
-  // Verificar sesión al cargar la página
-  document.addEventListener('DOMContentLoaded', function() {
-    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
-    const paginaActual = window.location.pathname.split('/').pop();
+  <script>
+    // Verificar sesión al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+      const paginaActual = window.location.pathname.split('/').pop();
 
-  // Páginas que requieren autenticación
-    const paginasProtegidas = [
-      'index.html', 
-      'official/dashboard-funcionario.html',
-      'official/revision-declaraciones.html',
-      'official/inspecciones.html',
-      'official/soporte.html'
-      // Agrega aquí otras páginas protegidas
-    ];
-    
-    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
-      localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "users/login.html";
-    }
-    
-    // Verificar si es funcionario para páginas de funcionario
-    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
-      if (usuarioLogeado !== "funcionario") {
-        alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "index.html" : "../users/login.html";
+      // Páginas que requieren autenticación
+      const paginasProtegidas = [
+        'index.html', 
+        'official/dashboard-funcionario.html',
+        'official/revision-declaraciones.html',
+        'official/inspecciones.html',
+        'official/soporte.html'
+      ];
+      
+      if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+        localStorage.setItem("paginaDestino", paginaActual);
+        window.location.href = "/users/login.html";
       }
-    }
-  });
-</script>
 
+      // Verificar si es funcionario para páginas de funcionario
+      if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+        if (usuarioLogeado !== "funcionario") {
+          alert("Acceso denegado: Se requieren privilegios de funcionario");
+          window.location.href = usuarioLogeado ? "/index.html" : "/users/login.html";
+        }
+      }
+    });
+  </script>
 </head>
+
 <body>
   <!-- Encabezado -->
   <header class="navbar">
@@ -49,8 +48,8 @@
       </div>
     </div>
     <nav>
-      <button class="login-btn" onclick="window.location.href='users/login.html'">🔐 Iniciar Sesión</button>
-      <button class="login-btn" onclick="window.location.href='auth/registro.html'"> Registrarse </button>
+      <button class="login-btn" onclick="window.location.href='/users/login.html'">🔐 Iniciar Sesión</button>
+      <button class="login-btn" onclick="window.location.href='/auth/registro.html'"> Registrarse </button>
     </nav>
   </header>
 
@@ -109,7 +108,7 @@
         <button onclick="verificarSesionYRedirigir('procedures/arancelaria.html')">Iniciar Trámite</button>
       </div>
 
-      <div class ="card">
+      <div class="card">
         <div class="icon verde">🐾</div>
         <h2>Declaración de Mascota</h2>
         <p>Registre la entrada de mascotas al país</p>
@@ -121,17 +120,15 @@
         <h2>Pasos Fronterizos</h2>
         <p>Información sobre pasos fronterizos y requisitos</p>
         <button onclick="verificarSesionYRedirigir('procedures/pasos.html')">Iniciar Trámite</button>
-        </div>
+      </div>
       
       <div class="card">
         <div class="icon morado">🚗</div>
         <h2>Registrar Vehículo</h2>
         <p>Registre su vehículo para trámites aduaneros</p>
         <button onclick="verificarSesionYRedirigir('procedures/vehiculo.html')">Iniciar Trámite</button>
-        </div>
       </div>
-
-
+    </div>
   </main>
 
   <script src="js/script.js"></script>
