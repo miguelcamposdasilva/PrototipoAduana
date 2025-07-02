@@ -818,3 +818,49 @@ tr:hover {
     padding: 0 0.5rem;
   }
 }
+
+/* Header con franja tricolor */
+.bandera-header {
+  position: relative;
+  background-color: white;
+  padding-top: 30px;
+  border-bottom: 1px solid #ccc;
+  z-index: 100;
+}
+
+/* Franja tricolor superior */
+.bandera-header .franja {
+  position: absolute;
+  top: 0;
+  height: 30px;
+  width: 33.33%;
+}
+
+.bandera-header .franja.azul {
+  left: 0;
+  background-color: #1f57f5;
+}
+
+.bandera-header .franja.roja {
+  right: 0;
+  background-color: #e01111;
+}
+
+.bandera-header .estrella {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #1f57f5;
+}
+
+/* Contenido normal del header */
+.bandera-header .contenido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+/* Resto de tus estilos: logo, botones, etc., se mantienen como ya los tenías */
