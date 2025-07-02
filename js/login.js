@@ -8,8 +8,16 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 
   // Usuarios prototipo (fijos)
   const credencialesValidas = {
-    "usuario@aduana.com": { clave: "usuario123", tipo: "usuario", redirigir: "../index.html" },
-    "funcionario@aduana.com": { clave: "funcionario123", tipo: "funcionario", redirigir: "../official/dashboard-funcionario.html" }
+    "usuario@aduana.com": {
+      clave: "usuario123",
+      tipo: "persona",  // ← aquí debe ser "persona", no "usuario"
+      redirigir: "../index.html"
+    },
+    "funcionario@aduana.com": {
+      clave: "funcionario123",
+      tipo: "funcionario",
+      redirigir: "../official/dashboard-funcionario.html"
+    }
   };
 
   let usuarioInfo = credencialesValidas[user];
@@ -23,19 +31,17 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
         usuarioInfo = {
           clave: datos.password,
           tipo: datos.tipo,
-          redirigir: datos.tipo === "funcionario" 
-            ? "../official/dashboard-funcionario.html" 
-            : "../index.html"
+          redirigir:
+            datos.tipo === "funcionario"
+              ? "../official/dashboard-funcionario.html"
+              : "../index.html"
         };
       }
     }
   }
 
   if (usuarioInfo && pass === usuarioInfo.clave && tipoUsuario === usuarioInfo.tipo) {
-    // Guardar tipo de usuario en sesión
     localStorage.setItem("usuarioLogeado", usuarioInfo.tipo);
-
-    // Mensaje de éxito
     mensaje.textContent = "Inicio de sesión exitoso. Redirigiendo...";
     mensaje.style.color = "green";
 
