@@ -11,38 +11,46 @@
     const usuarioLogeado = localStorage.getItem("usuarioLogeado");
     const paginaActual = window.location.pathname.split('/').pop();
     
-     // Páginas que requieren autenticación
     const paginasProtegidas = [
       'index.html', 
       'official/dashboard-funcionario.html',
       'official/revision-declaraciones.html',
       'official/inspecciones.html',
       'official/soporte.html'
-      // Agrega aquí otras páginas protegidas
     ];
     
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
       window.location.href = "../users/login.html";
     }
-    
-    // Verificar si es funcionario para páginas de funcionario
+
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
         window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
       }
     }
-  });
-</script>
 
+    // Lógica para mostrar mensaje al enviar el formulario
+    const form = document.querySelector("form");
+    const mensaje = document.createElement("p");
+    mensaje.style.marginTop = "1rem";
+    form.after(mensaje);
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault(); // Evita que recargue la página
+      mensaje.textContent = "¡Formulario enviado exitosamente!";
+      mensaje.style.color = "green";
+    });
+  });
+  </script>
 </head>
 <body>
   <h1>📦 Declaración de Importación</h1>
   <form>
-    <label>Nombre del Producto:<br><input type="text" /></label><br>
-    <label>País de Origen:<br><input type="text" /></label><br>
-    <label>Valor en USD:<br><input type="number" /></label><br>
+    <label>Nombre del Producto:<br><input type="text" required /></label><br>
+    <label>País de Origen:<br><input type="text" required /></label><br>
+    <label>Valor en USD:<br><input type="number" required /></label><br>
     <button type="submit">Enviar</button>
   </form>
 </body>

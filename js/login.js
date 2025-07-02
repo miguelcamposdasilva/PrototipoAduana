@@ -1,34 +1,36 @@
 document.getElementById("loginForm").addEventListener("submit", function(e) {
   e.preventDefault();
+
   const user = document.getElementById("usuario").value;
   const pass = document.getElementById("clave").value;
+  const tipoUsuario = document.getElementById("tipoUsuario").value;
   const mensaje = document.getElementById("mensaje");
 
-  // Credenciales para usuario normal
-  if (user === "usuario@aduana.com" && pass === "usuario123") {
-    localStorage.setItem("usuarioLogeado", "usuario");
+  // Credenciales válidas (modo prototipo)
+  const credencialesValidas = {
+    "usuario@aduana.com": { clave: "usuario123", tipo: "usuario", redirigir: "../index.html" },
+    "funcionario@aduana.com": { clave: "funcionario123", tipo: "funcionario", redirigir: "../official/dashboard-funcionario.html" }
+  };
+
+  const usuarioInfo = credencialesValidas[user];
+
+  if (usuarioInfo && pass === usuarioInfo.clave && tipoUsuario === usuarioInfo.tipo) {
+    // Guardar tipo de usuario en sesión
+    localStorage.setItem("usuarioLogeado", usuarioInfo.tipo);
+
+    // Mensaje de éxito
     mensaje.textContent = "Inicio de sesión exitoso. Redirigiendo...";
     mensaje.style.color = "green";
-    
-    // Redirigir a la página destino o al index por defecto
-    const paginaDestino = localStorage.getItem("paginaDestino") || "../index.html";
+
+    // Redireccionar a página solicitada (o por defecto)
+    const paginaDestino = localStorage.getItem("paginaDestino") || usuarioInfo.redirigir;
+    localStorage.removeItem("paginaDestino"); // Limpiar destino para futuras sesiones
+
     setTimeout(() => {
       window.location.href = paginaDestino;
     }, 1000);
-  } 
-  // Credenciales para funcionario
-  else if (user === "funcionario@aduana.com" && pass === "funcionario123") {
-    localStorage.setItem("usuarioLogeado", "funcionario");
-    mensaje.textContent = "Inicio de sesión exitoso. Redirigiendo...";
-    mensaje.style.color = "green";
-    
-    const paginaDestino = localStorage.getItem("paginaDestino") || "../official/dashboard-funcionario.html";
-    setTimeout(() => {
-      window.location.href = paginaDestino;
-    }, 1000);
-  } 
-  else {
-    mensaje.textContent = "Usuario o contraseña incorrectos.";
+  } else {
+    mensaje.textContent = "Usuario, contraseña o tipo de usuario incorrecto.";
     mensaje.style.color = "red";
   }
 });
