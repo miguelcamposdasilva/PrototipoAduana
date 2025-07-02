@@ -4,38 +4,35 @@
   <meta charset="UTF-8" />
   <title>Iniciar Sesión</title>
   <link rel="stylesheet" href="../css/style.css" />
-<script>
-  // Verificar sesión al cargar la página
-  document.addEventListener('DOMContentLoaded', function() {
-    const usuarioLogeado = localStorage.getItem("usuarioLogeado");
-    const paginaActual = window.location.pathname.split('/').pop();
+  <script>
+    // Verificar sesión al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      const usuarioLogeado = localStorage.getItem("usuarioLogeado");
+      const paginaActual = window.location.pathname.split('/').pop();
 
-  // Páginas que requieren autenticación
-    const paginasProtegidas = [
-      'index.html', 
-      'official/dashboard-funcionario.html',
-      'official/revision-declaraciones.html',
-      'official/inspecciones.html',
-      'official/soporte.html'
-      // Agrega aquí otras páginas protegidas
-    ];
-    
-    if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
-      localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "../users/login.html";
-    }
-    
-    // Verificar si es funcionario para páginas de funcionario
-    if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
-      if (usuarioLogeado !== "funcionario") {
-        alert("Acceso denegado: Se requieren privilegios de funcionario");
-        window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
+      // Páginas que requieren autenticación
+      const paginasProtegidas = [
+        'index.html', 
+        'official/dashboard-funcionario.html',
+        'official/revision-declaraciones.html',
+        'official/inspecciones.html',
+        'official/soporte.html'
+      ];
+
+      if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
+        localStorage.setItem("paginaDestino", paginaActual);
+        window.location.href = "../users/login.html";
       }
-    }
-  });
-</script>
 
-
+      // Verificar si es funcionario para páginas de funcionario
+      if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
+        if (usuarioLogeado !== "funcionario") {
+          alert("Acceso denegado: Se requieren privilegios de funcionario");
+          window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
+        }
+      }
+    });
+  </script>
 </head>
 <body>
   <main>
@@ -43,7 +40,7 @@
     <form id="loginForm">
       <label for="tipoUsuario">Tipo de Usuario:</label>
       <select id="tipoUsuario" required>
-        <option value="persona">Persona</option>
+        <option value="usuario">Persona</option>
         <option value="funcionario">Funcionario</option>
       </select>
 
