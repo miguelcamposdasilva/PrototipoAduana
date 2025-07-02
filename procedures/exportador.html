@@ -6,34 +6,42 @@
   <link rel="stylesheet" href="../css/style.css" />
 
 <script>
-  // Verificar sesión al cargar la página
   document.addEventListener('DOMContentLoaded', function() {
     const usuarioLogeado = localStorage.getItem("usuarioLogeado");
     const paginaActual = window.location.pathname.split('/').pop();
     
-     // Páginas que requieren autenticación
     const paginasProtegidas = [
       'index.html', 
       'official/dashboard-funcionario.html',
       'official/revision-declaraciones.html',
       'official/inspecciones.html',
       'official/soporte.html'
-      // Agrega aquí otras páginas protegidas
     ];
-    
     
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
       window.location.href = "../users/login.html";
     }
-    
-    // Verificar si es funcionario para páginas de funcionario
+
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
         window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
       }
     }
+
+    // Lógica para mostrar mensaje de éxito y limpiar
+    const form = document.querySelector("form");
+    const mensaje = document.createElement("p");
+    mensaje.style.marginTop = "1rem";
+    form.after(mensaje);
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      mensaje.textContent = "¡Formulario enviado exitosamente!";
+      mensaje.style.color = "green";
+      form.reset(); // Limpia los campos
+    });
   });
 </script>
 
@@ -41,11 +49,12 @@
 <body>
   <h1>🧾 Registro Oficial de Exportador</h1>
   <form>
-    <label>Nombre Completo:<br><input type="text" /></label><br>
-    <label>RUT:<br><input type="text" /></label><br>
-    <label>Empresa:<br><input type="text" /></label><br>
+    <label>Nombre Completo:<br><input type="text" required /></label><br>
+    <label>RUT:<br><input type="text" required /></label><br>
+    <label>Empresa:<br><input type="text" required /></label><br>
     <button type="submit">Registrarse</button>
   </form>
 </body>
 </html>
+
 

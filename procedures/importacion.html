@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="../css/style.css" />
 
   <script>
-  // Verificar sesión al cargar la página
   document.addEventListener('DOMContentLoaded', function() {
     const usuarioLogeado = localStorage.getItem("usuarioLogeado");
     const paginaActual = window.location.pathname.split('/').pop();
@@ -31,16 +30,17 @@
       }
     }
 
-    // Lógica para mostrar mensaje al enviar el formulario
+    // Lógica de formulario
     const form = document.querySelector("form");
     const mensaje = document.createElement("p");
     mensaje.style.marginTop = "1rem";
     form.after(mensaje);
 
     form.addEventListener("submit", function(e) {
-      e.preventDefault(); // Evita que recargue la página
+      e.preventDefault();
       mensaje.textContent = "¡Formulario enviado exitosamente!";
       mensaje.style.color = "green";
+      form.reset(); // Limpiar campos
     });
   });
   </script>

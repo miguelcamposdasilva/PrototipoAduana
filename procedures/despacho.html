@@ -4,44 +4,51 @@
   <meta charset="UTF-8">
   <title>Despacho Urgente</title>
   <link rel="stylesheet" href="../css/style.css" />
-<script>
-  // Verificar sesión al cargar la página
+  <script>
   document.addEventListener('DOMContentLoaded', function() {
     const usuarioLogeado = localStorage.getItem("usuarioLogeado");
     const paginaActual = window.location.pathname.split('/').pop();
 
-   // Páginas que requieren autenticación
     const paginasProtegidas = [
       'index.html', 
       'official/dashboard-funcionario.html',
       'official/revision-declaraciones.html',
       'official/inspecciones.html',
       'official/soporte.html'
-      // Agrega aquí otras páginas protegidas
     ];
-    
-    
+
     if (paginasProtegidas.includes(paginaActual) && !usuarioLogeado) {
       localStorage.setItem("paginaDestino", paginaActual);
-      window.location.href = "users/login.html";
+      window.location.href = "../users/login.html";
     }
-    
-    // Verificar si es funcionario para páginas de funcionario
+
     if (paginaActual.includes('dashboard') || paginaActual.includes('funcionario')) {
       if (usuarioLogeado !== "funcionario") {
         alert("Acceso denegado: Se requieren privilegios de funcionario");
         window.location.href = usuarioLogeado ? "../index.html" : "../users/login.html";
       }
     }
-  });
-</script>
 
+    // Lógica de formulario
+    const form = document.querySelector("form");
+    const mensaje = document.createElement("p");
+    mensaje.style.marginTop = "1rem";
+    form.after(mensaje);
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      mensaje.textContent = "¡Formulario enviado exitosamente!";
+      mensaje.style.color = "green";
+      form.reset(); // Limpiar campos
+    });
+  });
+  </script>
 </head>
 <body>
   <h1>⏱️ Solicitud de Despacho Urgente</h1>
   <form>
-    <label>Tipo de mercancía:<br><input type="text" /></label><br>
-    <label>Motivo de urgencia:<br><textarea></textarea></label><br>
+    <label>Tipo de mercancía:<br><input type="text" required /></label><br>
+    <label>Motivo de urgencia:<br><textarea required></textarea></label><br>
     <button type="submit">Enviar Solicitud</button>
   </form>
 </body>
